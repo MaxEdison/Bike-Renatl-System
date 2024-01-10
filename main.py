@@ -74,11 +74,6 @@ def getchar():
     if system() == "Windows":
 
         char = str(getch())[2]
-
-        while char != "1" and char != "2" and char != "0":
-            print("\nInvalid input. Please try again.")
-            char = str(getch())[2]
-        
     else:
         setcbreak(sys.stdin)
         char = sys.stdin.read(1)
@@ -171,7 +166,7 @@ def choose_role():
     while char != "1" and char != "2" and char != "3" and char != "0":
         if c == 0:
             print("\nInvalid input. Please try again.")
-            char = sys.stdin.read(1)
+            char = getchar()
             c = 1
         elif c == 3:
             print("\033[1;31mToo many attempts. Exiting...\033[0m")
@@ -179,7 +174,7 @@ def choose_role():
             connection.close()
             exit()
         else:
-            char = sys.stdin.read(1)
+            char = getchar()
             c += 1
 
     if char == "1" or char == "3":
@@ -217,7 +212,7 @@ def Admin_Menu():
     while char != "1" and char != "2" and char != "3" and char != "4" and char != "5" and char != "6" and char != "0":
         if c == 0:
             print("\nInvalid input. Please try again.")
-            char = sys.stdin.read(1)
+            char = getchar()
             c = 1
         elif c == 3:
             print("\033[1;31mToo many attempts. Exiting...\033[0m")
@@ -225,7 +220,7 @@ def Admin_Menu():
             connection.close()
             exit()
         else:
-            char = sys.stdin.read(1)
+            char = getchar()
             c += 1
     match char:
         case "1":
