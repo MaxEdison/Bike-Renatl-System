@@ -17,7 +17,7 @@ HEADER = """
 
 ADMIN_MENU = """
 \033[1;34mADMIN PAGE\033[0m
-    1. Add Bike(s)
+    1. Add Bike(s) \U0001F6B2
     2. Add new Admin
     3. Add new User
     4. List of Users
@@ -90,6 +90,8 @@ def check_repeated(table, column, value):
         return False
 
 def Add_Admin():
+    print(HEADER)
+    print("\n\33[1;34mAdd new Admin\33[0m")
     username = input("Username: ")
     password = input("Password: ")
     role = "admin"
@@ -100,8 +102,8 @@ def Add_Admin():
     else:
         cursor.execute("INSERT INTO users VALUES(?, ?, ?)", (username, password, role))
         connection.commit()
-        print("\nAdmin Added Successfully!")
-
+        print("\033[96m\nAdmin Added Successfully!\033[0m\u2705")
+        
 
 def check_admins():
     cursor.execute("SELECT * FROM users WHERE role = 'admin'")
@@ -125,13 +127,82 @@ def check_role(username, password):
         return 0
     
 def SignUp():
-    pass                                #TODO : complete this
+    username = input("Username: ")
+    password = input("Password: ")
+
+    if check_repeated("users", "username", username):
+        print("\nUser already exists. Exiting...")
+        time.sleep(3)
+        cls()
+        Guest_Page()
+    else:
+        cursor.execute("INSERT INTO users VALUES(?, ?, ?)", (username, password, "user"))
+        connection.commit()
+        print("\nUser Added Successfully!")
 
 def User_Menu():
-    pass                                #TODO : complete this
+                                #TODO : complete this
+    print(HEADER)
+    print(USER_MENU)
+    char = getchar()
+
+    c = 0
+    while char != "1" and char != "2" and char != "3" and char != "4" and char != "5" and char != "6" and char != "0":
+        if c == 0:
+            print("\nInvalid input. Please try again.")
+            char = getchar()
+            c = 1
+        elif c == 3:
+            print("\033[1;31mToo many attempts. Exiting...\033[0m")
+            cursor.close()
+            connection.close()
+            exit()
+        else:
+            char = getchar()
+            c += 1
+    match char:
+        case "1":
+            cls()
+            print("\nAdd Bike(s)")
+            time.sleep(3)
+            cls()
+            Admin_Menu()
+        case "2":
+            cls()
+            Add_Admin()
+            time.sleep(4)
+            cls()
+            Admin_Menu()
+        case "3":
+            cls()
+            SignUp()
+            time.sleep(3)
+            cls()
+            Admin_Menu()
+        case "4":
+            cls()
+            print("\nList of Users")
+            time.sleep(3)
+            cls()
+            Admin_Menu()
+
+        case "5":
+            cls()
+            print("\nList of Bikes")
+            time.sleep(3)
+            cls()
+            Admin_Menu()
+        case "6":
+            cls()
+            print("\nLoad Data")
+            time.sleep(3)
+            cls()
+            Admin_Menu()
+        case "0":
+            Logout()
 
 
-def Login():
+def Login():                            # Use Polymorphism
     username = input("\nUsername: ")
     password = input("Password: ")
 
@@ -183,7 +254,7 @@ def choose_role():
 
     elif char == "2":
         cls()
-        #SignUp()
+        SignUp()
 
     elif char == "0":
         cls()
@@ -202,6 +273,22 @@ def Guest_Page():
     time.sleep(0.25)
     print("0. Exit")
     choose_role()
+
+def Add_Bike():
+    print(HEADER)
+    print("\n\33[1;34mAdd new Bike\33[0m")
+    username = input("Username: ")
+    password = input("Password: ")
+    role = "admin"
+    if check_repeated("users", "username", username):
+        print("\nUser already exists. Exiting...")
+        time.sleep(3)
+        pass                                                      #TODO: fix this
+    else:
+        cursor.execute("INSERT INTO users VALUES(?, ?, ?)", (username, password, role))
+        connection.commit()
+        print("\033[96m\nAdmin Added Successfully!\033[0m\u2705")
+        
 
 def Admin_Menu():
     print(HEADER)
@@ -224,17 +311,42 @@ def Admin_Menu():
             c += 1
     match char:
         case "1":
+            cls()
             print("\nAdd Bike(s)")
+            time.sleep(3)
+            cls()
+            Admin_Menu()
         case "2":
-            print("\nAdd new Admin")
+            cls()
+            Add_Admin()
+            time.sleep(4)
+            cls()
+            Admin_Menu()
         case "3":
-            print("\nAdd new User")
+            cls()
+            SignUp()
+            time.sleep(4)
+            cls()
+            Admin_Menu()
         case "4":
+            cls()
             print("\nList of Users")
+            time.sleep(3)
+            cls()
+            Admin_Menu()
+
         case "5":
+            cls()
             print("\nList of Bikes")
+            time.sleep(3)
+            cls()
+            Admin_Menu()
         case "6":
+            cls()
             print("\nLoad Data")
+            time.sleep(3)
+            cls()
+            Admin_Menu()
         case "0":
             Logout()
 
