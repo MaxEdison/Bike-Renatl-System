@@ -1,5 +1,6 @@
 import sqlite3
 import time
+from tabulate import tabulate
 import sys
 from platform import system
 from os import system as command
@@ -52,6 +53,7 @@ QUERY = """CREATE TABLE IF NOT EXISTS users
     username TEXT,
     password TEXT,
     role TEXT
+    renting TEXT
     );"""
 cursor.execute(QUERY)
 connection.commit()
@@ -59,7 +61,7 @@ connection.commit()
 QUERY = """CREATE TABLE IF NOT EXISTS bikes
     (
     name TEXT,
-    is_rented INTEGER
+    is_rented TEXT
     );"""
 cursor.execute(QUERY)
 connection.commit()
@@ -140,6 +142,21 @@ def SignUp():
         connection.commit()
         print("\nUser Added Successfully!")
 
+
+
+def My_Bikes(self):
+    print(HEADER)
+    print("\n\33[1;34mList of My Bikes\33[0m")
+
+    cur = cursor.execute('SELECT renting FROM users WHERE username = ?', (self.username))
+    rows = cur.fetchall()
+    rows = rows.split(" ")
+    print(tabulate(rows, headers=[description[0] for description in cur.description], tablefmt="grid"))
+
+    print("\nPress any key to go back...")
+    getchar()
+
+
 def User_Menu():
                                 #TODO : complete this
     print(HEADER)
@@ -181,8 +198,8 @@ def User_Menu():
             Admin_Menu()
         case "4":
             cls()
-            print("\nList of Users")
-            time.sleep(3)
+            My_Bikes()
+            #time.sleep(3)
             cls()
             Admin_Menu()
 
@@ -290,6 +307,19 @@ def Add_Bike():
         print("\033[96m\nAdmin Added Successfully!\033[0m\u2705")
         
 
+
+def list_users():
+    print(HEADER)
+    print("\n\33[1;34mList of Users\33[0m")
+
+    cur = cursor.execute('SELECT username, role FROM users')
+    rows = cur.fetchall()
+
+    print(tabulate(rows, headers=[description[0] for description in cur.description], tablefmt="grid"))
+
+    print("\nPress any key to go back...")
+    getchar()
+
 def Admin_Menu():
     print(HEADER)
     print(ADMIN_MENU)
@@ -330,8 +360,8 @@ def Admin_Menu():
             Admin_Menu()
         case "4":
             cls()
-            print("\nList of Users")
-            time.sleep(3)
+            list_users()
+            #time.sleep(3)
             cls()
             Admin_Menu()
 
